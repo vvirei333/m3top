@@ -89,9 +89,9 @@ pub fn cpu_card(ui: &mut Ui, snap: &Snapshot, history: &CpuHistory, width: f32, 
                 metric_headline(ui, &format!("{:.1}%", shown_total), Some((level_label(shown_total, 70.0, 90.0), color)));
                 ui.add_space(4.0);
 
-                egui::Frame::new().fill(theme::SURFACE_CONTAINER_LOWEST).corner_radius(theme::SHAPE_LARGE).inner_margin(6.0).show(ui, |ui| {
+                egui::Frame::new().fill(theme::SURFACE_CONTAINER_LOWEST).corner_radius(theme::SHAPE_LARGE).inner_margin(5.0).show(ui, |ui| {
                     Plot::new("cpu_plot")
-                        .height(72.0)
+                        .height(52.0)
                         .width((width - 44.0).max(40.0))
                         .show_axes([false, false])
                         .show_grid([false, false])
