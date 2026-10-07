@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=M3Top
+GenericName=System Monitor
+Comment=Material 3 Expressive system monitor for Linux
+Exec=m3top
+Icon=m3top
+Terminal=false
+Categories=System;Monitor;Utility;
+StartupWMClass=M3Top

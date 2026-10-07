@@ -1,0 +1,42 @@
+# Maintainer: M3Top contributors <noreply@example.com>
+#
+# Builds from the repository checkout this PKGBUILD lives in
+# (packaging/arch/PKGBUILD) — run `makepkg` from this directory.
+pkgname=m3top
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Material 3 Expressive system monitor for Linux"
+arch=('x86_64' 'aarch64')
+url="https://github.com/m3top/m3top"
+license=('MIT')
+depends=('gcc-libs' 'glibc')
+makedepends=('cargo')
+options=('!lto')
+source=()
+sha256sums=()
+
+_repo_root() {
+  cd "$startdir/../.."
+  pwd
+}
+
+build() {
+  cd "$(_repo_root)"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo build --release --locked -p m3top
+}
+
+package() {
+  local root
+  root="$(_repo_root)"
+  cd "$root"
+
+  install -Dm755 target/release/m3top "$pkgdir/usr/bin/m3top"
+  install -Dm644 packaging/m3top.desktop "$pkgdir/usr/share/applications/m3top.desktop"
+  install -Dm644 packaging/icons/m3top.svg "$pkgdir/usr/share/icons/hicolor/scalable/apps/m3top.svg"
+  install -Dm644 packaging/icons/m3top_256.png "$pkgdir/usr/share/icons/hicolor/256x256/apps/m3top.png"
+  install -Dm644 packaging/icons/m3top_128.png "$pkgdir/usr/share/icons/hicolor/128x128/apps/m3top.png"
+  install -Dm644 packaging/icons/m3top_64.png "$pkgdir/usr/share/icons/hicolor/64x64/apps/m3top.png"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/m3top/LICENSE"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/m3top/README.md"
+}

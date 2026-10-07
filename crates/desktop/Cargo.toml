@@ -2,9 +2,69 @@
 name = "m3top"
 version = "0.1.0"
 edition = "2021"
+description = "Material 3 Expressive system monitor for Linux"
+license = "MIT"
+authors = ["M3Top contributors"]
+repository = "https://github.com/m3top/m3top"
 
 [dependencies]
 m3top-core = { path = "../core" }
 eframe = "0.31"
 egui_plot = "0.31"
 egui_extras = "0.31"
+
+[package.metadata.deb]
+name = "m3top"
+maintainer = "M3Top contributors <noreply@example.com>"
+copyright = "2026, M3Top contributors"
+license-file = ["../../LICENSE", "0"]
+extended-description = """\
+M3Top is a desktop system monitor styled after Material 3 Expressive: \
+per-core CPU load with history graph, RAM/swap, real hwmon temperatures, \
+network throughput, and a searchable/sortable process table."""
+section = "utils"
+priority = "optional"
+# The binary itself only hard-links libc/libgcc/libm (winit probes its
+# windowing/GL backends with dlopen at runtime), so dpkg-shlibdeps finds
+# nothing useful. List the actual runtime needs (X11 + Wayland + GL)
+# explicitly instead.
+depends = "libc6, libgcc-s1, libx11-6, libxrandr2, libxi6, libxcursor1, libxkbcommon0, libwayland-client0, libwayland-cursor0, libwayland-egl1, libgl1"
+assets = [
+    ["target/release/m3top", "usr/bin/m3top", "755"],
+    ["../../packaging/m3top.desktop", "usr/share/applications/m3top.desktop", "644"],
+    ["../../packaging/icons/m3top_256.png", "usr/share/icons/hicolor/256x256/apps/m3top.png", "644"],
+    ["../../packaging/icons/m3top_128.png", "usr/share/icons/hicolor/128x128/apps/m3top.png", "644"],
+    ["../../packaging/icons/m3top_64.png", "usr/share/icons/hicolor/64x64/apps/m3top.png", "644"],
+    ["../../packaging/icons/m3top.svg", "usr/share/icons/hicolor/scalable/apps/m3top.svg", "644"],
+    ["../../README.md", "usr/share/doc/m3top/README.md", "644"],
+]
+
+[package.metadata.generate-rpm]
+name = "m3top"
+license = "MIT"
+summary = "Material 3 Expressive system monitor for Linux"
+assets = [
+    { source = "target/release/m3top", dest = "/usr/bin/m3top", mode = "755" },
+    { source = "../../packaging/m3top.desktop", dest = "/usr/share/applications/m3top.desktop", mode = "644" },
+    { source = "../../packaging/icons/m3top_256.png", dest = "/usr/share/icons/hicolor/256x256/apps/m3top.png", mode = "644" },
+    { source = "../../packaging/icons/m3top_128.png", dest = "/usr/share/icons/hicolor/128x128/apps/m3top.png", mode = "644" },
+    { source = "../../packaging/icons/m3top_64.png", dest = "/usr/share/icons/hicolor/64x64/apps/m3top.png", mode = "644" },
+    { source = "../../packaging/icons/m3top.svg", dest = "/usr/share/icons/hicolor/scalable/apps/m3top.svg", mode = "644" },
+    { source = "../../README.md", dest = "/usr/share/doc/m3top/README.md", mode = "644", doc = true },
+]
+
+# Same reasoning as the .deb `depends`: the binary only hard-links libc,
+# winit dlopen's its Wayland/X11/GL backends at runtime. RPM package names
+# differ from Debian's, hence the separate list.
+[package.metadata.generate-rpm.requires]
+glibc = "*"
+libgcc = "*"
+mesa-libGL = "*"
+libxkbcommon = "*"
+libwayland-client = "*"
+libwayland-cursor = "*"
+libwayland-egl = "*"
+libX11 = "*"
+libXrandr = "*"
+libXi = "*"
+libXcursor = "*"
