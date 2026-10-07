@@ -1,0 +1,10 @@
+[package]
+name = "m3top"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+m3top-core = { path = "../core" }
+eframe = "0.31"
+egui_plot = "0.31"
+egui_extras = "0.31"
